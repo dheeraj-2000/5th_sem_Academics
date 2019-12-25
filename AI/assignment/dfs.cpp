@@ -1,0 +1,69 @@
+/* Author : Dheeraj Chaudhary  (17BCS009)
+**Recursive DFS Traversal of an undirected and unweighted graph.
+**Idea is to implement the adjacency list as an array of vectors:*/
+
+// C++ program to print DFS traversal from
+// a given vertex in a given graph
+#include<iostream>
+#include <list>
+
+using namespace std;
+
+class Graph{
+    int V;
+    list<int> *adj;
+    void DFS_visit(int v, bool visited[]);
+public:
+    Graph(int V);
+    void addEdge(int v, int w);
+    void DFS(int v);
+};
+
+Graph::Graph(int V){
+    this->V = V;
+    adj = new list<int>[V];
+}
+
+void Graph::addEdge(int v, int w){
+    adj[v].push_back(w);
+}
+
+void Graph::DFS_visit(int v, bool visited[]){
+    visited[v] = true;
+    cout << v << " ";
+    list<int>::iterator i;
+    for (i = adj[v].begin(); i != adj[v].end();i++){
+            if (!visited[*i])
+            DFS_visit(*i, visited);
+        }
+}
+
+void Graph::DFS(int v)
+{
+    // Mark all the vertices as not visited
+    bool *visited = new bool[V];
+    for (int i = 0; i < V; i++)
+        visited[i] = false;
+
+
+  DFS_visit(v, visited);
+}
+
+// Driver code
+int main()
+{
+	// Create a graph given in the above diagram
+	Graph g(5);
+	g.addEdge(0, 1);
+	g.addEdge(0, 2);
+	g.addEdge(1, 2);
+	g.addEdge(1, 3);
+	g.addEdge(1, 4);
+	g.addEdge(2, 3);
+  g.addEdge(3, 4);
+
+	cout << "Depth First Traversal PATH (starting from vertex 0:) \n";
+	g.DFS(0);
+
+	return 0;
+}
